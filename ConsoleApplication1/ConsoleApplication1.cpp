@@ -14,6 +14,12 @@ public:
 	T& operator[](const int index); //возвращать ссылку на тип Т, пергрузка оператора, принимаемый параметр - индекс
 
 	void pop_front();
+	void clear();
+
+	void push_front(T data);
+	void insert(T data, int index);
+	void removeAt(int index);
+	void pop_back();
 
 
 private:
@@ -48,7 +54,7 @@ List<T>::List()
 template<typename T>
 List<T>::~List()
 {
-
+	clear();
 }
 
 template<typename T>
@@ -100,6 +106,77 @@ void List<T>::pop_front()
 	delete *temp;
 
 	Size--;
+}
+
+template<typename T>
+void List<T>::clear()
+{
+	while (Size)
+	{
+		pop_front();
+	}
+}
+
+template<typename T>
+void List<T>::push_front(T data)
+{
+	head = new Node<T>(data, head);
+	Size++;
+}
+
+template<typename T>
+void List<T>::insert(T data, int index)
+{
+
+	if (index == 0)
+	{
+		push_front(data);
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+
+		for (int i = 0; i < index - 1; i++)
+		{
+			previous = previous->pNext;
+		}
+
+		previous->pNext = new Node<T>(data, previous->pNext);
+
+		Size++;
+	}
+}
+
+template<typename T>
+void List<T>::removeAt(int index)
+{
+	if (index == 0)
+	{
+		pop_front();
+	}
+	else
+	{
+		Node<T>* previous = this->head;
+		for (int i = 0; i < index - 1; i++)
+		{
+			previous = previous->pNext;
+		}
+
+		Node<T>* toDelete = previous->pNext;
+
+		previous->pNext = toDelete->pNext;
+
+		delete toDelete;
+		Size--;
+	}
+
+
+}
+
+template<typename T>
+void List<T>::pop_back()
+{
+	removeAt(Size-1)
 }
 
 
